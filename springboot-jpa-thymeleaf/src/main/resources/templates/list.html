@@ -1,0 +1,18 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>k</title>
+</head>
+<body>
+<!--/*@thymesVar id="name" type="java.lang.String"*/-->
+
+<ol>
+	<li th:each="item: ${userModel.userList}"> 
+		<span th:text="|Welcome to our application, ${item.id},${item.userName}!|" >
+	</li>
+</ol>
+</body>
+</html>
