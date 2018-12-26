@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * 集成页面用 restController VS Controller
+ * @author  108day
+ */
 @Controller
 public class WebController {
-
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping(value = "/hello")
     public String hello(Model model) {
