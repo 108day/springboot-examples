@@ -82,7 +82,7 @@ public class User implements Serializable {
         this.regTime = regTime;
     }
 
-    public User(String userName, String passWord, String email, String nickName, String regTime) {
+    public User(String userName, String email,  String passWord,String nickName, String regTime) {
         this.userName = userName;
         this.passWord = passWord;
         this.email = email;
