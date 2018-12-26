@@ -47,7 +47,7 @@ public class DemoController {
     @RequestMapping("/demo")
     public Map getInfo(){
         HashMap map = new HashMap();
-        map.put("user",userRepository.findByUserName("wangjl"));
+        map.put("user",userRepository.findByUserName("秦始皇"));
         return map;
     }
     
