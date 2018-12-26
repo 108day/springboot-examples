@@ -1,4 +1,4 @@
-# spring-boot-examples
+# springboot-examples
 
 ## 目的
 1. 记录一些搭建环境的过程以及步骤，方便下次从零开始；
