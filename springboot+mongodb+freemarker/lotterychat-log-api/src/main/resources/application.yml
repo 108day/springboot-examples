@@ -1,0 +1,18 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8 
+        max-threads: 1000
+        min-spare-threads: 30
+    port: 0 
+    servlet:
+      context-path: /admin
+# spring
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
