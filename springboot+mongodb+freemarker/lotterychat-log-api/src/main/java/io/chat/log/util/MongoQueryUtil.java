@@ -62,11 +62,6 @@ public class MongoQueryUtil {
 						 throw new IllegalArgumentException("The parameter key="+key+" of value="+value+" format must be array !");
 					 }
 				 }
-				 if(value instanceof Direction) {
-					 query.with(Sort.by((Direction)value,key)); //排序
-				 }else {
-					 query.with(Sort.by(Direction.ASC,"_id")); //排序
-				 }
 			 });
 		}
 		return query;

@@ -1,12 +1,28 @@
 # Tomcat
+#在conf/server.xml找到Connectorport="8080" protocol="HTTP/1.1"，
+#增加maxThreads和acceptCount属性（使acceptCount大于等于maxThreads）
 server:
-    tomcat:
-        uri-encoding: UTF-8 
-        max-threads: 1000
-        min-spare-threads: 30
-    port: 0 
     servlet:
       context-path: /admin
+    tomcat:
+        uri-encoding: UTF-8 
+        max-threads: 300     #tomcat可用于请求处理的最大线程数，默认是200
+        min-spare-threads: 30   #tomcat初始线程数，即最小空闲线程数
+        accept-count: 1000     #当所有可以使用的处理请求的线程数都被使用时，可以放到处理队列中的请求数，超过这个数的请求将不予处理.默认100
+        max-idle-time: 30000  #超过最小空闲线程数时，多的线程会等待这个时间长度，然后关闭
+        accesslog:
+          buffered: true
+          directory: E:/logs
+          enabled: true
+          file-date-format: .yyyy-MM-dd
+          pattern: common
+          prefix: access_log
+          rename-on-rotate: false
+          request-attributes-enabled: false
+          rotate: true
+          suffix: .log
+    port: 0
+
 # spring
 spring:
   data:

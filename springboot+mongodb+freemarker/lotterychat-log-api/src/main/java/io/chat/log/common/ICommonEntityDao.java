@@ -6,23 +6,23 @@ import java.util.Map;
 import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.PageResult;
 
-public interface ICommonEntityDao<T> {
+public interface ICommonEntityDao {
 
 	/**
      * 创建对象
      * @param user
      */
-    public  void insertOne(T entityClass) throws Exception ;
-    public  void insertMany(List<T> list) throws Exception ;
+    public <T> void insertOne(T entityClass) throws Exception ;
+    public <T> void insertMany(List<T> list) throws Exception ;
     
-    public T findOne(Map<String, CustmerCriteria> params,Class<T> t) throws Exception ;
+    public <T> T findOne(Map<String, CustmerCriteria> params,Class<T> t) throws Exception ;
     /**
      * 根据条件查询集合内文档列表
      * @Description: TODO(用一句话描述该文件做什么)
      * @author Kevin zhaosheji.kevin@gmail.com
      * @date 2019年1月5日
      */
-    public List<T> findMany(Map<String, CustmerCriteria> params,Class<T> entityClass) throws Exception;
+    public <T> List<T> findMany(Map<String, CustmerCriteria> params,Class<T> entityClass) throws Exception;
     /**
      * 分页查询
      * @param params 带表达式
@@ -32,7 +32,7 @@ public interface ICommonEntityDao<T> {
      * @return PageResult<T>
      * @throws Exception
      */
-    public PageResult<T> page(Map<String,CustmerCriteria> params, Integer currentPage,Integer pageSize,Class<T> entityClass) throws Exception ;
+    public <T> PageResult<T> page(Map<String,CustmerCriteria> params, Integer currentPage,Integer pageSize,Class<T> entityClass) throws Exception ;
     
   
     
@@ -44,7 +44,7 @@ public interface ICommonEntityDao<T> {
      * @author Kevin zhaosheji.kevin@gmail.com
      * @date 2019年1月5日
      */
-    public long delete(Map<String,CustmerCriteria> query,Class<T> entityClass) throws Exception;
+    public <T> long delete(Map<String,CustmerCriteria> query,Class<T> entityClass) throws Exception;
     
     /**
      * 删除
@@ -53,7 +53,7 @@ public interface ICommonEntityDao<T> {
      * @author Kevin zhaosheji.kevin@gmail.com
      * @date 2019年1月5日
      */
-    public void drop(Class<T> entityClass) throws Exception ;
+    public <T> void drop(Class<T> entityClass) throws Exception ;
 
     /**
      * @param entityClass 更新对象的java类型
@@ -63,5 +63,32 @@ public interface ICommonEntityDao<T> {
      * @author Kevin zhaosheji.kevin@gmail.com
      * @date 2019年1月5日
      */
-    public T update(Map<String, CustmerCriteria> query,T t,Class<T> entityClass) throws Exception ;
+    public <T> T update(Map<String, CustmerCriteria> query,T t,Class<T> entityClass) throws Exception ;
+    
+    
+    /*******************************/
+    /**
+     * 创建对象
+     * @param user
+     */
+    public void insertOne(String collectionName,Map<String,Object> map) throws Exception ;
+    public void insertMany(String collectionName,List<Map<String,Object>> document) throws Exception ;
+    /**
+     * 分页查询
+     * @param params 带表达式
+     * @param currentPage
+     * @param pageSize
+     * @param t 最终返回的对象，以及查询的集合对象
+     * @return PageResult<T>
+     * @throws Exception
+     */
+    public Object page(String collectionName,Map<String,CustmerCriteria> params, Integer currentPage,Integer pageSize) throws Exception ;
+    
+    public Object findMany(String collectionName,Map<String, CustmerCriteria> params) throws Exception;
+    public Object findMany(String collectionName,Map<String, CustmerCriteria> params,String sortColumn,Integer currentPage,Integer pageSize) throws Exception;
+    public long delete(String collectionName,Map<String,CustmerCriteria> params) throws Exception;
+    
+    public void drop(String collectionName) throws Exception ;
+
+    public void update(String collectionName,Map<String, CustmerCriteria> query,Map<String,Object> document) throws Exception ;
 }

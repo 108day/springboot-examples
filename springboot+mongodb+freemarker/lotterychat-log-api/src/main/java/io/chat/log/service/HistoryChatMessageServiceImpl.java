@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.chat.log.entity.HistoryChatMessageEnity;
+import io.chat.log.entity.SendMessage;
 import io.chat.log.dao.IHistoryChatMessageDao;
 import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.PageResult;
@@ -17,34 +17,37 @@ public class HistoryChatMessageServiceImpl implements IHistoryChatMessageService
 	private IHistoryChatMessageDao iHistoryChatMessageDao;
 
 	@Override
-	public void saveChatMessage(HistoryChatMessageEnity chatMessageEnity) throws Exception {
+	public void saveChatMessage(SendMessage sendMessage) throws Exception {
 		
-		 iHistoryChatMessageDao.insertOne(chatMessageEnity);
+		 iHistoryChatMessageDao.insertOne(sendMessage);
 	}
 
 	@Override
-	public PageResult<HistoryChatMessageEnity> selectPageChatMessageByMap(Map<String, CustmerCriteria> params, Integer currentPage,
+	public PageResult<SendMessage> selectPageChatMessageByMap(Map<String, CustmerCriteria> params, Integer currentPage,
 			Integer pageSize) throws Exception {
 		
-		return iHistoryChatMessageDao.page(params, currentPage, pageSize,HistoryChatMessageEnity.class);
+		return iHistoryChatMessageDao.page(params, currentPage, pageSize,SendMessage.class);
 	}
 
 	@Override
-	public List<HistoryChatMessageEnity> selectListChatMessageByMap(Map<String, CustmerCriteria> params) throws Exception {
+	public List<SendMessage> selectListChatMessageByMap(Map<String, CustmerCriteria> params) throws Exception {
 		// TODO Auto-generated method stub
-		return iHistoryChatMessageDao.findMany(params, HistoryChatMessageEnity.class);
+		return iHistoryChatMessageDao.findMany(params, SendMessage.class);
 	}
 
 	@Override
 	public long delete(Map<String, CustmerCriteria> params) throws Exception {
-		return iHistoryChatMessageDao.delete(params, HistoryChatMessageEnity.class);
+		return iHistoryChatMessageDao.delete(params, SendMessage.class);
 	}
 
 	@Override
-	public HistoryChatMessageEnity update(HistoryChatMessageEnity chatMessageEnity) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public SendMessage update(SendMessage chatMessageEnity) throws Exception {
+		return iHistoryChatMessageDao.update(null,chatMessageEnity,SendMessage.class);
 	}
 
+	
+	public void insertChatMessage(String collectionName,Map<String,Object> map) throws Exception {
+		iHistoryChatMessageDao.insertOne(collectionName, map);
+	}
 	
 }

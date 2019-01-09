@@ -1,7 +1,7 @@
 package io.chat.log.controller;
 
 
-import java.util.UUID;
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,10 +20,13 @@ import org.springframework.web.context.WebApplicationContext;
 import com.alibaba.fastjson.JSON;
 
 import io.chat.log.ChatLogApplication;
-import io.chat.log.entity.HistoryChatMessageEnity;
+import io.chat.log.entity.AccessIpEntity;
 import io.chat.log.service.IAppLogService;
-import io.chat.log.vo.SendMessage;
-
+/**
+ * 测试添加IP授权接口
+ * @author Kevin zhaosheji.kevin@gmail.com
+ * @date 2019年1月9日
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ChatLogApplication.class)//这里的Application是springboot的启动类名
 @WebAppConfiguration
@@ -37,8 +40,6 @@ public class ApiAccessIPControllerTest {
 
     private MockMvc mockMvc;
 
-    private final String roomId = "66666";
-    
     @Before
     public void setupMockMvc() throws Exception {
     	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
@@ -46,26 +47,20 @@ public class ApiAccessIPControllerTest {
 
     @Test
     public void testSaveEntity() throws Exception {
-    	
-		HistoryChatMessageEnity chatMessageEntity = new HistoryChatMessageEnity();
-    	SendMessage sendMessage = new SendMessage();
-    	String json ="{\"msg\":\"黑夜给了我黑色的皮肤，但是我的牙齿却可以很白！Are you understand my heart for me ? \"}";
-    	sendMessage.setContent(JSON.parseObject(json));
-    	sendMessage.setMsgid((UUID.randomUUID()+"+"+System.currentTimeMillis()).replaceAll("-", ""));
-    	sendMessage.setMsgtime(System.currentTimeMillis());
-    	sendMessage.setFromnickname("封神独秀");
-    	sendMessage.setFromuserid("12300");
-    	sendMessage.setMtype("red");
-    	sendMessage.setTousernickname("西门一支");
-    	sendMessage.setTouserid("95271");
-    	chatMessageEntity.setJsonObject(sendMessage);
-    	chatMessageEntity.setRoomId(roomId);
-    	chatMessageEntity.setCreatedTime(System.currentTimeMillis());
-		//调用接口，传入添加的用户参数
-    	mockMvc.perform(MockMvcRequestBuilders.post("/api/accessip/save")
-		        .contentType(MediaType.APPLICATION_JSON_UTF8)
-		        .content(JSON.toJSONString(chatMessageEntity)))
-				.andDo(MockMvcResultHandlers.print());
-	
+    	for( int i=1; i< 255 ;i++) {
+    		AccessIpEntity accessIpEntity = new AccessIpEntity();
+        	accessIpEntity.setTitle("小飞");
+        	accessIpEntity.setIp("10.10.105."+i);
+        	accessIpEntity.setScope("internet");
+        	accessIpEntity.setCreatedBy("admin");
+        	accessIpEntity.setCreatedTime(new Date());
+        	accessIpEntity.setLastModifyBy("admin");
+        	accessIpEntity.setLastModifyTime(new Date());
+    		//调用接口，传入添加的用户参数
+        	mockMvc.perform(MockMvcRequestBuilders.post("/api/accessip/save")
+    		        .contentType(MediaType.APPLICATION_JSON_UTF8)
+    		        .content(JSON.toJSONString(accessIpEntity)))
+    				.andDo(MockMvcResultHandlers.print());
+    	}
     }
 }

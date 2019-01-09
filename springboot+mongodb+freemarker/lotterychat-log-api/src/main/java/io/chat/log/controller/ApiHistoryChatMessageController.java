@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import io.chat.log.entity.HistoryChatMessageEnity;
+import io.chat.log.entity.SendMessage;
 import io.chat.log.service.IHistoryChatMessageService;
 import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.PageResult;
@@ -62,7 +61,7 @@ public class ApiHistoryChatMessageController{
 			}else if(startTime==null && endTime!=null ) {
 				params.put("createdTime", new CustmerCriteria("<=",endTime));
 			}
-			PageResult<HistoryChatMessageEnity> result = this.historyChatMessageService.selectPageChatMessageByMap(params, currentPage, pageSize);
+			PageResult<SendMessage> result = this.historyChatMessageService.selectPageChatMessageByMap(params, currentPage, pageSize);
 			return R.okwithdata(result);
 		} catch (Exception e) {
 			logger.error("系统错误，请联系管理员！", e);
@@ -71,28 +70,27 @@ public class ApiHistoryChatMessageController{
 	}
 	
 	/**
-	 * 查询符合条件的权限数据  注意：<单机测试时，查询数据量过多的话eclipse会卡住>
+	 * 保存
 	 * @Description: TODO(用一句话描述该文件做什么)
 	 * @author sheji zhaosheji.kevin@gmail.com
 	 * @date 2019年1月4日
 	 */
-/*	@RequestMapping("/list/{roomId}")
-	public Object List(@PathVariable("roomId") String roomId,@RequestParam("minutes") Long minutes) {
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	public Object save(@RequestBody SendMessage message) {
 		try {
-			Map<String, CustmerCriteria> params =  new HashMap<>();
-			params.put("roomId", new CustmerCriteria("=",roomId));
-			//查询 minutes 分钟 到 现在的数据
-			if(minutes!=null) {
-				params.put("createdTime", new CustmerCriteria("between",new Long[]{System.currentTimeMillis()-60000*minutes,System.currentTimeMillis()}));
+			if(message==null) {
+				return R.error(500, "保存失败，消息不能为空！");
 			}
-			params.put("roomId", new CustmerCriteria("=",roomId));
-			List<HistoryChatMessageEnity>  result = this.historyChatMessageService.selectListChatMessageByMap(params);
-			return R.okwithdata(result);
+			if(message.getMsgid()==null) {
+				return R.error(500, "保存失败，消息ID不能为空！");
+			}
+			this.historyChatMessageService.saveChatMessage(message);
+			return R.ok();
 		} catch (Exception e) {
-			logger.error("系统异常，请联系管理员！", e);
-			return R.error(500, "系统异常，请联系管理员！");
+			logger.error("保存失败，请联系管理员！", e);
+			return R.error(500, "保存失败，请联系管理员！");
 		}
-	}*/
+	}
 	
 	/**
 	 * 保存
@@ -100,21 +98,17 @@ public class ApiHistoryChatMessageController{
 	 * @author sheji zhaosheji.kevin@gmail.com
 	 * @date 2019年1月4日
 	 */
-	@RequestMapping(value="/save",method=RequestMethod.POST)
-	public Object save(@RequestBody HistoryChatMessageEnity chatMessageEntity) {
+	@RequestMapping(value="/save/{roomId}",method=RequestMethod.POST)
+	public Object save(@PathVariable("roomId") String roomId,@RequestBody Map<String,Object> param) {
 		try {
-			if(chatMessageEntity==null) {
+			if(param==null) {
 				return R.error(500, "保存失败，消息不能为空！");
 			}
-			if(chatMessageEntity.getRoomId()==null) {
-				return R.error(500, "保存失败，房间编号不能为空！");
-			}
-			if(chatMessageEntity.getJsonObject()==null) {
-				return R.error(500, "保存失败，消息内容不能为空！");
-			}
-			chatMessageEntity.setCreatedTime(chatMessageEntity.getCreatedTime()== null || chatMessageEntity.getCreatedTime() == 0 ? System.currentTimeMillis(): chatMessageEntity.getCreatedTime());
-			this.historyChatMessageService.saveChatMessage(chatMessageEntity);
-			return R.okwithdata(chatMessageEntity);
+			String collctionName = "historyChatMessageEnity"+roomId;
+			param.put("roomId", collctionName);
+			param.put("createdTime", param.get("msgtime")==null ? System.currentTimeMillis():param.get("msgtime"));
+			this.historyChatMessageService.insertChatMessage(collctionName, param);
+			return R.ok();
 		} catch (Exception e) {
 			logger.error("保存失败，请联系管理员！", e);
 			return R.error(500, "保存失败，请联系管理员！");
