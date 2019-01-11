@@ -1,10 +1,12 @@
 package io.chat.log.dao;
 
+
 import org.springframework.stereotype.Service;
 
-import io.chat.log.common.CommonCollectionDaoImpl;
+import io.chat.log.common.CommonEntityDaoImpl;
 
 @Service("appLogDao")
-public class AppLogDaoImpl extends CommonCollectionDaoImpl implements IAppLogDao {
+public class AppLogDaoImpl extends CommonEntityDaoImpl implements IAppLogDao {
+
 	
 }

@@ -2,6 +2,8 @@ package io.chat.log.service;
 
 import java.util.Map;
 
+import org.springframework.data.domain.Sort;
+
 import io.chat.log.vo.CustmerCriteria;
 /**
  * 在线用户操作
@@ -16,6 +18,7 @@ public interface IOnlineUserService {
 	 * @date 2019年1月9日
 	 */
 	public void saveOnline(Map<String,Object> user)throws Exception ;
+	public void saveOrUpdateOnline(Map<String,Object> user)throws Exception ;
 	/**
 	 * 查找上线用户
 	 * @Description: TODO(用一句话描述该文件做什么)

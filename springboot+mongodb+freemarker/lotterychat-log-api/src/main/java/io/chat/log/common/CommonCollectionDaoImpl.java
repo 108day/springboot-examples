@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -18,7 +19,7 @@ import io.chat.log.util.MongoQueryUtil;
 import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.PageResult;
 
-public class CommonCollectionDaoImpl implements ICommonCollectionDao{
+public abstract class CommonCollectionDaoImpl implements ICommonDao{
 
 	@Autowired
     private MongoTemplate mongoTemplate;
@@ -83,16 +84,75 @@ public class CommonCollectionDaoImpl implements ICommonCollectionDao{
 		mongoTemplate.dropCollection(collectionName);
 	}
 
+
 	@Override
-	public void update(String collectionName,Map<String, CustmerCriteria> params,Map<String,Object> document) throws Exception {
-		Assert.notNull(collectionName,"The parameter collectionName of method update must not be null!");
-		Assert.notNull(document,"The parameter document of method update must not be null!");
-		Update update = new Update();
-		document.forEach((key,value)->{
-			update.set(key, value);
-		});
-		Query query =  MongoQueryUtil.buildQuery(new Query(),params);
-		mongoTemplate.updateFirst(query, update, collectionName);
+	public <T> void insertOne(T entityClass) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T> void insertMany(List<T> list) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T> T findOne(Map<String, CustmerCriteria> params, Class<T> t) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> List<T> findMany(Map<String, CustmerCriteria> params, Class<T> entityClass) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> PageResult<T> page(Map<String, CustmerCriteria> params, Integer currentPage, Integer pageSize,
+			Class<T> entityClass) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T> long delete(Map<String, CustmerCriteria> query, Class<T> entityClass) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public <T> void drop(Class<T> entityClass) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T> T update(Map<String, CustmerCriteria> query, T t, Class<T> entityClass) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object findMany(String collectionName, Map<String, CustmerCriteria> params, String sortColumn,
+			Integer currentPage, Integer pageSize) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object findMany(String collectionName, Map<String, CustmerCriteria> params, String sortColumn,
+			Direction sort, Integer currentPage, Integer pageSize) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateOrSave(String collectionName, Map<String, CustmerCriteria> query, Map<String, Object> document)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -3,10 +3,12 @@ package io.chat.log.common;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Sort;
+
 import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.PageResult;
 
-public interface ICommonEntityDao {
+public interface ICommonDao {
 
 	/**
      * 创建对象
@@ -86,9 +88,10 @@ public interface ICommonEntityDao {
     
     public Object findMany(String collectionName,Map<String, CustmerCriteria> params) throws Exception;
     public Object findMany(String collectionName,Map<String, CustmerCriteria> params,String sortColumn,Integer currentPage,Integer pageSize) throws Exception;
+    public Object findMany(String collectionName,Map<String, CustmerCriteria> params,String sortColumn,Sort.Direction sort ,Integer currentPage,Integer pageSize) throws Exception;
     public long delete(String collectionName,Map<String,CustmerCriteria> params) throws Exception;
     
     public void drop(String collectionName) throws Exception ;
 
-    public void update(String collectionName,Map<String, CustmerCriteria> query,Map<String,Object> document) throws Exception ;
+    public void updateOrSave(String collectionName,Map<String, CustmerCriteria> query,Map<String,Object> document) throws Exception ;
 }

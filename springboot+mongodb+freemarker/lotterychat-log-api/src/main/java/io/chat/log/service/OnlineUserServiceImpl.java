@@ -32,5 +32,22 @@ public class OnlineUserServiceImpl implements IOnlineUserService {
 		user.put("userId", new CustmerCriteria("=",userId));
 		return onlineUserDao.delete(USER_ONLINE_COLLECTION, user);
 	}
+
+	@Override
+	public void saveOrUpdateOnline(Map<String, Object> user) throws Exception {
+		if(user==null || user.size()==0) {
+			throw new Exception("参数不能为空！");
+		}
+		Map<String, CustmerCriteria> query  = new HashMap<>();
+		if(user.get("sessionid")!=null) {
+			query.put("sessionid", new CustmerCriteria("=",user.get("sessionid")));
+		}
+		if(user.get("userId")!=null) {
+			query.put("userId", new CustmerCriteria("=",user.get("userId")));
+		}
+		onlineUserDao.updateOrSave(USER_ONLINE_COLLECTION, query, user);
+		
+	}
+	
 	
 }

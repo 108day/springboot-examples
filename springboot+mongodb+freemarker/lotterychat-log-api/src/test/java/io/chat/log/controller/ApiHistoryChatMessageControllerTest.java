@@ -2,6 +2,8 @@ package io.chat.log.controller;
 
 
 import java.lang.Thread.State;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -26,7 +29,10 @@ import org.springframework.web.context.WebApplicationContext;
 import com.alibaba.fastjson.JSON;
 
 import io.chat.log.ChatLogApplication;
+import io.chat.log.dao.IHistoryChatMessageDao;
 import io.chat.log.service.IAppLogService;
+import io.chat.log.service.IHistoryChatMessageService;
+import io.chat.log.service.IHistoryMessageService;
 import io.chat.log.vo.SendMessage;
 
 @RunWith(SpringRunner.class)
@@ -38,18 +44,21 @@ public class ApiHistoryChatMessageControllerTest {
     private WebApplicationContext context;
     @Autowired
 	protected IAppLogService appLogService;
-    
+
+	@Autowired
+	private IHistoryMessageService historyMessageService;
 
     private MockMvc mockMvc;
 
-    private final String roomId = "66666";
+    private static final String roomId = "66666";
+    private static final String collectionName = "historyChatMessageEnity0";
     
     @Before
     public void setupMockMvc() throws Exception {
     	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
     
-    @Test
+    /*@Test
     public void testSave() throws Exception {
     	int threadNumber = 300 ; //300个线程
     	ConcurrentHashMap<String,Object> currentHashMap   = new ConcurrentHashMap<>();
@@ -76,7 +85,7 @@ public class ApiHistoryChatMessageControllerTest {
 
     @Test
     public void testSaveEntity() throws Exception {
-    	for(int i = 0;i<20000000; i++) {
+    	for(int i = 0;i<200; i++) {
         	SendMessage sendMessage = new SendMessage();
         	String json ="{\"msg\":\"黑夜给了我黑色的皮肤，但是我的牙齿却可以很白！Are you understand my heart for me ? \"}";
         	sendMessage.setContent(JSON.parseObject(json));
@@ -95,13 +104,13 @@ public class ApiHistoryChatMessageControllerTest {
     	}
     }
     
-    /**
+    *//**
      * 分页查询数据
      * @Description: TODO(分页查询数据，可以指定开始时间，结束时间和分页数，分页数最大可以设置1000)
      * @author Kevin zhaosheji.kevin@gmail.com
      * @date 2019年1月5日
    */
-    @Test
+    //@Test
     public void testPage() throws Exception {
     	Long currentTime = System.currentTimeMillis();
     	Long startTime = currentTime - 60000*10;/*查询10分钟之前到现在的数据*/
@@ -114,13 +123,23 @@ public class ApiHistoryChatMessageControllerTest {
 
     }
 
+    @Test
+    public void testFind() throws Exception {
+    	Long currentTime = System.currentTimeMillis();
+    	Long startTime = currentTime - 60000*10;/*查询10分钟之前到现在的数据*/
+    	List<Map<String,Object>> list =(List<Map<String,Object>>) historyMessageService.find(collectionName, startTime,"msgtime", Sort.Direction.ASC,20);
+    	list.forEach(obj->{
+    		System.out.println(obj);
+    	});
+    }
+    
     /**
      * 删除数据
      * @Description: TODO(删除10分钟之前的数据)
      * @author Kevin zhaosheji.kevin@gmail.com
      * @date 2019年1月5日
      */
-    @After
+    //@After
     public void testDelete() throws Exception {
     	String uri ="/api/chatlog/delete/"+roomId+"?minutesBefore="+1;
         //调用接口，传入添加的用户参数

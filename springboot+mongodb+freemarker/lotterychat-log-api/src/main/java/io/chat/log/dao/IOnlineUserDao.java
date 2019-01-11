@@ -1,9 +1,9 @@
 package io.chat.log.dao;
 
 
-import io.chat.log.common.ICommonCollectionDao;
+import io.chat.log.common.ICommonDao;
 
-public interface IOnlineUserDao extends ICommonCollectionDao {
+public interface IOnlineUserDao extends ICommonDao {
 
 	
 }

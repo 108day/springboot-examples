@@ -1,6 +1,7 @@
 package io.chat.log.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.util.Assert;
@@ -22,7 +24,7 @@ import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.PageResult;
 import net.minidev.json.JSONObject;
 
-public class CommonEntityDaoImpl implements ICommonEntityDao{
+public abstract class CommonEntityDaoImpl implements ICommonDao{
 
 	@Autowired
     private MongoTemplate mongoTemplate;
@@ -136,14 +138,14 @@ public class CommonEntityDaoImpl implements ICommonEntityDao{
 		}
 		
 		query.skip((currentPage-1)*pageSize).limit(pageSize); //分页
-		return new PageResult<>(mongoTemplate.find(query,Object.class,collectionName),totalCount);
+		return new PageResult<>(mongoTemplate.find(query,HashMap.class,collectionName),totalCount);
 	}
 	@Override
 	public Object findMany(String collectionName,Map<String, CustmerCriteria> params) throws Exception{
 		Assert.notNull(collectionName,"The parameter findMany of method insertMany must not be null!");
 		Assert.notNull(params,"The parameter 'currentPage' of method findMany must not be null !");
 		Query query =  MongoQueryUtil.buildQuery(new Query(),params);
-		 return mongoTemplate.find(query,Object.class,collectionName);
+		return mongoTemplate.find(query,HashMap.class,collectionName);
 	}
 	@Override
 	public Object findMany(String collectionName,Map<String, CustmerCriteria> params,String sortColumn,Integer currentPage,Integer pageSize) throws Exception{
@@ -156,7 +158,7 @@ public class CommonEntityDaoImpl implements ICommonEntityDao{
 			 query.with(Sort.by(Direction.DESC,"_id")); //排序
 		 }
 		query.skip((currentPage-1)*pageSize).limit(pageSize); //分页
-		return mongoTemplate.find(query,Object.class,collectionName);
+		return mongoTemplate.find(query,HashMap.class,collectionName);
 	}
 
 	@Override
@@ -175,16 +177,47 @@ public class CommonEntityDaoImpl implements ICommonEntityDao{
 	}
 
 	@Override
-	public void update(String collectionName,Map<String, CustmerCriteria> params,Map<String,Object> document) throws Exception {
+	public void updateOrSave(String collectionName,Map<String, CustmerCriteria> params,Map<String,Object> document) throws Exception {
 		Assert.notNull(collectionName,"The parameter collectionName of method update must not be null!");
 		Assert.notNull(document,"The parameter document of method update must not be null!");
-		Update update = new Update();
-		document.forEach((key,value)->{
-			update.set(key, value);
-		});
 		Query query =  MongoQueryUtil.buildQuery(new Query(),params);
-		mongoTemplate.updateFirst(query, update, collectionName);
+ 		List<Map<String,Object>> list = (List<Map<String,Object>>) findMany(collectionName,params);
+ 		if(list ==null || list.size() == 0) {
+ 			insertOne(collectionName, document);
+ 		}else if(list.size() == 1) {
+ 			Update update = new Update();
+			document.forEach((key,value)->{
+				update.set(key, value);
+			});
+			mongoTemplate.updateMulti(query, update, collectionName);
+ 		}else {
+ 			for(int i =0;i<list.size();i++) {
+ 				if(list.get(i) instanceof Map) {
+ 					Map<String,Object>  obj = (Map<String,Object>)list.get(i);
+ 	 				Update update = new Update();
+ 	 				obj.forEach((key,value)->{
+ 	 					update.set(key, value);
+ 	 				});
+ 	 				Query queryOne = new Query().addCriteria(Criteria.where("_id").is(obj.get("_id")));
+ 	 				mongoTemplate.updateMulti(queryOne, update, collectionName);
+ 				}else {
+ 					throw new Exception("返回对象类型错误！");
+ 				}
+ 			}
+ 		}
 	}
 	
-	
+	@Override
+	public Object findMany(String collectionName,Map<String, CustmerCriteria> params,String sortColumn,Sort.Direction sort ,Integer currentPage,Integer pageSize) throws Exception{
+		Assert.notNull(collectionName,"The parameter findMany of method insertMany must not be null!");
+		Assert.notNull(params,"The parameter 'currentPage' of method findMany must not be null !");
+		Query query =  MongoQueryUtil.buildQuery(new Query(),params);
+		if(sortColumn!=null) {
+			 query.with(Sort.by(sort,sortColumn)); //排序
+		 }else {
+			 query.with(Sort.by(sort,"_id")); //排序
+		 }
+		query.skip((currentPage-1)*pageSize).limit(pageSize); //分页
+		return mongoTemplate.find(query,Object.class,collectionName);
+	}
 }

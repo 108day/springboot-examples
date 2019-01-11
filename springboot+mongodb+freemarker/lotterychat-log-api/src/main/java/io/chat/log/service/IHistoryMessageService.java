@@ -3,6 +3,10 @@ package io.chat.log.service;
 
 import java.util.Map;
 
+import org.springframework.data.domain.Sort;
+
+import io.chat.log.vo.CustmerCriteria;
+
 /**
  * 聊天历史消息保存，查询，删除
  * @author Kevin zhaosheji.kevin@gmail.com
@@ -23,6 +27,7 @@ public interface IHistoryMessageService {
 	 * @date 2019年1月9日
 	 */
 	public Object find(String collectionName,long startTime,int pageSize)throws Exception;
+	public Object find(String collectionName, long startTime,String orderby,Sort.Direction sort, int pageSize) throws Exception;
 	/**
 	 * 删除消息
 	 * @Description: TODO(用一句话描述该文件做什么)
