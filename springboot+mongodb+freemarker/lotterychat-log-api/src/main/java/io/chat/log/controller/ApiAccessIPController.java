@@ -16,9 +16,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+import io.chat.common.vo.CustmerCriteria;
 import io.chat.log.entity.AccessIpEntity;
 import io.chat.log.service.IAccessIPService;
-import io.chat.log.vo.CustmerCriteria;
 import io.chat.log.vo.R;
 /**
  * IP访问控制，管理接口提供给后面管理界面使用

@@ -1,4 +1,4 @@
-package io.chat.log.util;
+package io.chat.common.util;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.Assert;
 
-import io.chat.log.vo.CustmerCriteria;
+import io.chat.common.vo.CustmerCriteria;
+
 
 public class MongoQueryUtil {
 

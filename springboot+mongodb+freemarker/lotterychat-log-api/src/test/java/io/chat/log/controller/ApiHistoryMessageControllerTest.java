@@ -29,16 +29,14 @@ import org.springframework.web.context.WebApplicationContext;
 import com.alibaba.fastjson.JSON;
 
 import io.chat.log.ChatLogApplication;
-import io.chat.log.dao.IHistoryChatMessageDao;
 import io.chat.log.service.IAppLogService;
-import io.chat.log.service.IHistoryChatMessageService;
 import io.chat.log.service.IHistoryMessageService;
 import io.chat.log.vo.SendMessage;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ChatLogApplication.class)//这里的Application是springboot的启动类名
 @WebAppConfiguration
-public class ApiHistoryChatMessageControllerTest {
+public class ApiHistoryMessageControllerTest {
 
     @Autowired
     private WebApplicationContext context;
@@ -51,38 +49,12 @@ public class ApiHistoryChatMessageControllerTest {
     private MockMvc mockMvc;
 
     private static final String roomId = "66666";
-    private static final String collectionName = "historyChatMessageEnity0";
+    private static final String collectionName = "historyChatMessageEnity";
     
     @Before
     public void setupMockMvc() throws Exception {
     	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
-    
-    /*@Test
-    public void testSave() throws Exception {
-    	int threadNumber = 300 ; //300个线程
-    	ConcurrentHashMap<String,Object> currentHashMap   = new ConcurrentHashMap<>();
-    	CountDownLatch cdl = new CountDownLatch(threadNumber);
-    	String collectionName="";
-    	String roomId ="";
-    	Long count = 100000L; // 每个线程处理一百万的数据
-    	for(int i = 0;i<threadNumber; i++) {
-    		new MyThread (collectionName,roomId,count, 
-    				mockMvc,appLogService,currentHashMap ,cdl);
-    	}
-    	cdl.await(60,TimeUnit.MINUTES);
-    	currentHashMap.forEach((key,value)->{
-    		if(value instanceof Thread) {
-    			Thread th= ((Thread)value);
-    			State state =th.getState();
-    	    	if(state.equals(State.RUNNABLE)) {
-    	    		th.interrupt();
-    	    	}
-    		}
-    	});
-    	
-    }
-
     @Test
     public void testSaveEntity() throws Exception {
     	for(int i = 0;i<200; i++) {
@@ -97,14 +69,14 @@ public class ApiHistoryChatMessageControllerTest {
         	sendMessage.setTousernickname("西门一支");
         	sendMessage.setTouserid("95271");
     		//调用接口，传入添加的用户参数
-        	mockMvc.perform(MockMvcRequestBuilders.post("/api/chatlog/save/"+new Random().nextInt(10))
+        	mockMvc.perform(MockMvcRequestBuilders.post("/api/chatlog/save/"+collectionName)
     		        .contentType(MediaType.APPLICATION_JSON_UTF8)
     		        .content(JSON.toJSONString(sendMessage)))
     				.andDo(MockMvcResultHandlers.print());
     	}
     }
     
-    *//**
+    /**
      * 分页查询数据
      * @Description: TODO(分页查询数据，可以指定开始时间，结束时间和分页数，分页数最大可以设置1000)
      * @author Kevin zhaosheji.kevin@gmail.com
@@ -115,7 +87,7 @@ public class ApiHistoryChatMessageControllerTest {
     	Long currentTime = System.currentTimeMillis();
     	Long startTime = currentTime - 60000*10;/*查询10分钟之前到现在的数据*/
     	Long endTime = currentTime;
-    	String uri = "/api/chatlog/page/"+roomId+"/"+1+"/"+20+"?startTime="+startTime+"&"+"endTime="+endTime;
+    	String uri = "/api/chatlog/page/"+collectionName+"/"+1+"/"+20+"?startTime="+startTime+"&"+"endTime="+endTime;
         //调用接口，传入添加的用户参数
     	mockMvc.perform(MockMvcRequestBuilders.get(uri)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -123,7 +95,7 @@ public class ApiHistoryChatMessageControllerTest {
 
     }
 
-    @Test
+    //@Test
     public void testFind() throws Exception {
     	Long currentTime = System.currentTimeMillis();
     	Long startTime = currentTime - 60000*10;/*查询10分钟之前到现在的数据*/
@@ -141,7 +113,7 @@ public class ApiHistoryChatMessageControllerTest {
      */
     //@After
     public void testDelete() throws Exception {
-    	String uri ="/api/chatlog/delete/"+roomId+"?minutesBefore="+1;
+    	String uri ="/api/chatlog/delete/"+collectionName+"?msgId="+1;
         //调用接口，传入添加的用户参数
         mockMvc.perform(MockMvcRequestBuilders.get(uri))
         .andDo(MockMvcResultHandlers.print());

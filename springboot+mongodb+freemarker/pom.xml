@@ -15,6 +15,7 @@
   
   <modules>
   	<module>lotterychat-log-api</module>
+  	<module>lotterychat--log-common</module>
   </modules>
   
   <properties>

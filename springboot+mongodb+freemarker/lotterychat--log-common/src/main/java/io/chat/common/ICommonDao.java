@@ -1,12 +1,13 @@
-package io.chat.log.common;
+package io.chat.common;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.data.domain.Sort;
 
-import io.chat.log.vo.CustmerCriteria;
-import io.chat.log.vo.PageResult;
+import io.chat.common.vo.CustmerCriteria;
+import io.chat.common.vo.PageResult;
+
 
 public interface ICommonDao {
 

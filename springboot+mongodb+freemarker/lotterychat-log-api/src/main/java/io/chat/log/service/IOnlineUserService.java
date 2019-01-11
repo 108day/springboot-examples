@@ -4,7 +4,8 @@ import java.util.Map;
 
 import org.springframework.data.domain.Sort;
 
-import io.chat.log.vo.CustmerCriteria;
+import io.chat.common.vo.CustmerCriteria;
+
 /**
  * 在线用户操作
  * @author Kevin zhaosheji.kevin@gmail.com

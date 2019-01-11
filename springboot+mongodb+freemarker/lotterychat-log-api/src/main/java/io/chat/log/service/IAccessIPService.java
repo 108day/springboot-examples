@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.chat.log.entity.AccessIpEntity;
-import io.chat.log.vo.CustmerCriteria;
+import io.chat.common.vo.CustmerCriteria;
 
 public interface IAccessIPService {
 

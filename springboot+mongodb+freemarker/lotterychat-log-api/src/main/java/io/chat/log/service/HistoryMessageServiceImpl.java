@@ -8,7 +8,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import io.chat.log.dao.IHistoryChatMessageDao;
-import io.chat.log.vo.CustmerCriteria;
+import io.chat.common.vo.CustmerCriteria;
 
 @Service("historyMessageService")
 public class HistoryMessageServiceImpl implements IHistoryMessageService {

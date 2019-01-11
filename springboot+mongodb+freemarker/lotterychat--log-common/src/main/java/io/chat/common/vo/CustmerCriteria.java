@@ -1,4 +1,4 @@
-package io.chat.log.vo;
+package io.chat.common.vo;
 
 import java.io.Serializable;
 

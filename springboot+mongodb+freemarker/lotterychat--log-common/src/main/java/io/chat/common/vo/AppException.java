@@ -1,33 +1,33 @@
-package io.chat.log.vo;
+package io.chat.common.vo;
 
 /**
  * 自定义异常
  * @author Kevin zhaosheji.kevin@gmail.com
  * @date 2019年1月5日
  */
-public class ApplicationException extends RuntimeException {
+public class AppException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
     private String msg;
     private int code = 500;
     
-    public ApplicationException(String msg) {
+    public AppException(String msg) {
 		super(msg);
 		this.msg = msg;
 	}
 	
-	public ApplicationException(String msg, Throwable e) {
+	public AppException(String msg, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
 	}
 	
-	public ApplicationException(String msg, int code) {
+	public AppException(String msg, int code) {
 		super(msg);
 		this.msg = msg;
 		this.code = code;
 	}
 	
-	public ApplicationException(String msg, int code, Throwable e) {
+	public AppException(String msg, int code, Throwable e) {
 		super(msg, e);
 		this.msg = msg;
 		this.code = code;

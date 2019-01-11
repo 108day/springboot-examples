@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.chat.log.dao.IOnlineUserDao;
-import io.chat.log.vo.CustmerCriteria;
+import io.chat.common.vo.CustmerCriteria;
 
 @Service("onlineUserService")
 public class OnlineUserServiceImpl implements IOnlineUserService {

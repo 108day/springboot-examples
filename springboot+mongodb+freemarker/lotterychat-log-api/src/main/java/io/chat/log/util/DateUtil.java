@@ -17,7 +17,6 @@
 package io.chat.log.util;
 
 
-import io.chat.log.vo.ApplicationException;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

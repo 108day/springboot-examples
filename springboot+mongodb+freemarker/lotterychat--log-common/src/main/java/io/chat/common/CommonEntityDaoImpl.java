@@ -1,4 +1,4 @@
-package io.chat.log.common;
+package io.chat.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +19,9 @@ import com.alibaba.fastjson.JSON;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 
-import io.chat.log.util.MongoQueryUtil;
-import io.chat.log.vo.CustmerCriteria;
-import io.chat.log.vo.PageResult;
+import io.chat.common.util.MongoQueryUtil;
+import io.chat.common.vo.CustmerCriteria;
+import io.chat.common.vo.PageResult;
 import net.minidev.json.JSONObject;
 
 public abstract class CommonEntityDaoImpl implements ICommonDao{

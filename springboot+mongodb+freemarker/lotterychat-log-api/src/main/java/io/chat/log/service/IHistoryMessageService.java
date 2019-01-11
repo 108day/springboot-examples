@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Sort;
 
-import io.chat.log.vo.CustmerCriteria;
+import io.chat.common.vo.CustmerCriteria;
 
 /**
  * 聊天历史消息保存，查询，删除

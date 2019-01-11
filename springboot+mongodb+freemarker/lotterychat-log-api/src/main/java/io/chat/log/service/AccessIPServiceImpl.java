@@ -5,7 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import io.chat.log.vo.CustmerCriteria;
+
+import io.chat.common.vo.CustmerCriteria;
 import io.chat.log.dao.IAccessIPDao;
 import io.chat.log.entity.AccessIpEntity;
 

@@ -9,5 +9,12 @@
   <name>lotterychat-log-api</name>
   <description>log chat  history message</description>
   
+  <dependencies>
+  	<dependency>
+  		<artifactId>lotterychat--log-common</artifactId>
+  		<groupId>io.chat.log.common</groupId>
+  		<version>1.0.0</version>
+  	</dependency>
+  </dependencies>
   
 </project>

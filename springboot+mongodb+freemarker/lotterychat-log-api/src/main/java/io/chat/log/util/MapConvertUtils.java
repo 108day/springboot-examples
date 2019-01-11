@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.chat.log.vo.ApplicationException;
-
 /**
  * 实体对象与Map之间的转换
  * @author Kevin zhaosheji.kevin@gmail.com
@@ -52,7 +50,6 @@ public class MapConvertUtils {
 						}
 					}
 				} catch (Exception e) {
-					throw new ApplicationException("The "+value+ " of "  +key+" data format is "+" error.",e);
 				}
     		});
     		return t;
@@ -103,7 +100,7 @@ public class MapConvertUtils {
 				}
 			}
 		} catch (Exception e) {
-			throw new ApplicationException(e.getLocalizedMessage(),e);
+			throw new Exception(e.getLocalizedMessage(),e);
 		} 
     	return map;
     }
