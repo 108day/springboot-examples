@@ -14,7 +14,7 @@
 - 3. 常用操作的脚手架，对框架的再次封装，方便自己使用，理解
 - 4. 学习框架的编码风格，深入理解框架的设计思想
 
-### springboot-2.2.0-SNAPSHOT-jpa-thymeleaf
+### 一、springboot-2.2.0-SNAPSHOT-jpa-thymeleaf
 框架：springboot-2.2.0-SNAPSHOT,jpa,thymeleaf
 数据库：mysql
 #### 工程配置结构：
@@ -26,7 +26,7 @@
   相对于全自动映射框架Hibernate来操作很多数据处理的复杂业务，我更倾向于MyBatis半自动映射框架，可以自己编写SQL语句，可控性更强
   自动化的优点是省时，省力，快速，易用。缺点也显而易见，配置不可见，如果对框架各个组件不熟悉的话，出错之后分析困难，不出问题还好，一出问题就不知所措！而且封装太多不利于初学者对框架的学习于理解。
   所以开发时选择框架很重要，可以依据自己对框架的掌握程度，以及团队人员的知识优势来选择。必要时可以进行集体培训。
-### springboot-2.0.0.RELEASE +mongodb，springboot-2.2.0-SNAPSHOT+mongodb
+### 二、springboot-2.0.0.RELEASE +mongodb，springboot-2.2.0-SNAPSHOT+mongodb
 框架：springboot-2.0.0.RELEASE,mongo
 数据库：mongodb
 #### 工程配置结构：
