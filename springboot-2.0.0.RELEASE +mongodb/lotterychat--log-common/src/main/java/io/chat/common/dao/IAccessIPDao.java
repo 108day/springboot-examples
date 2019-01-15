@@ -1,8 +1,8 @@
 package io.chat.common.dao;
 
-import io.chat.common.mongo.ICommonMongoDao;
+import io.chat.common.mongo.IMongoCommonDao;
 
-public interface IAccessIPDao extends ICommonMongoDao {
+public interface IAccessIPDao extends IMongoCommonDao {
 
 	
 }
