@@ -28,7 +28,7 @@ import io.chat.common.vo.PageResult;
 public abstract class MongoCommonDaoImpl implements IMongoCommonDao{
 
 	@Autowired
-    private MongoTemplate mongoTemplate;
+    protected MongoTemplate mongoTemplate;
 	
 	protected List<String> getUniqueIndex(String collectionName) {
 		Assert.isNull(collectionName,"The parameter 'query'  must not be null !");

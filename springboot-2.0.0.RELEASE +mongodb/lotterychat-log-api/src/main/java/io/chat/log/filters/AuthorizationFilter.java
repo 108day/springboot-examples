@@ -24,7 +24,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.alibaba.fastjson.JSON;
 
 import io.chat.log.entity.AccessIpEntity;
-import io.chat.common.service.IAccessIPService;
+import io.chat.log.service.IAccessIPService;
 /**
  * 验证访问者的Ip 需要申请注册
  * 

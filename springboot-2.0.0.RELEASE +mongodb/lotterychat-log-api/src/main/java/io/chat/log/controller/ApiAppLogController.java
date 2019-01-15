@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.util.JSON;
 
-import io.chat.common.service.IAppLogService;
+import io.chat.log.service.IAppLogService;
 import io.chat.log.vo.R;
 /**
  * 记录日志

@@ -21,7 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import io.chat.common.vo.CustmerCriteria;
 import io.chat.log.entity.SendMessage;
-import io.chat.common.service.IHistoryMessageService;
+import io.chat.log.service.IHistoryMessageService;
 import io.chat.log.vo.R;
 
 /**

@@ -30,8 +30,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.alibaba.fastjson.JSON;
 
 import io.chat.log.ChatLogApplication;
-import io.chat.common.service.IAppLogService;
-import io.chat.common.service.IHistoryMessageService;
+import io.chat.log.service.IAppLogService;
+import io.chat.log.service.IHistoryMessageService;
 import io.chat.log.util.ComputerMonitorUtil;
 import io.chat.log.vo.SendMessage;
 

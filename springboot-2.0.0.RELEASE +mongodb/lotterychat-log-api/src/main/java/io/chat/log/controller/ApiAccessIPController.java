@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import io.chat.common.service.IAccessIPService;
+import io.chat.log.service.IAccessIPService;
 import io.chat.common.vo.CustmerCriteria;
 import io.chat.log.entity.AccessIpEntity;
 import io.chat.log.vo.R;

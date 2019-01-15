@@ -1,4 +1,4 @@
-package io.chat.log.controller;
+package controller;
 
 
 import java.util.Date;
@@ -19,32 +19,33 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.alibaba.fastjson.JSON;
+import io.chat.log.admin.AdminApplication;
 
-import io.chat.log.ChatLogApplication;
-import io.chat.log.entity.AccessIpEntity;
-import io.chat.log.service.IAppLogService;
-import io.chat.log.service.IOnlineUserService;
 /**
  * 测试添加IP授权接口
  * @author Kevin zhaosheji.kevin@gmail.com
  * @date 2019年1月9日
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = ChatLogApplication.class)//这里的Application是springboot的启动类名
-public class ApiUserOnlineControllerTest {
+@SpringBootTest(classes = AdminApplication.class)//这里的Application是springboot的启动类名
+public class ApiAdminControllerTest {
 
     @Autowired
-	protected IOnlineUserService onlineUserService;
+    private WebApplicationContext context;
     
-   
+
+    private MockMvc mockMvc;
+
+    @Before
+    public void setupMockMvc() throws Exception {
+    	mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+    }
+
     @Test
-    public void testSaveOrUpdate() throws Exception {
-    	Map<String,Object> user= new HashMap<String,Object>();
-    	user.put("sessionid", 6);
-    	for(int i = 0 ;i< 10 ; i++) {
-    		
-        	onlineUserService.saveOrUpdateOnline(user);
-    	}
+    public void test1() throws Exception {
+		//调用接口，传入添加的用户参数
+    	mockMvc.perform(MockMvcRequestBuilders.post("/api/accessip/save")
+		        .contentType(MediaType.APPLICATION_JSON_UTF8)
+		        .content("")).andDo(MockMvcResultHandlers.print());
     }
 }

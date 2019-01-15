@@ -21,7 +21,7 @@ import com.alibaba.fastjson.JSON;
 
 import io.chat.log.ChatLogApplication;
 import io.chat.log.entity.AccessIpEntity;
-import io.chat.common.service.IAppLogService;
+import io.chat.log.service.IAppLogService;
 /**
  * 测试添加IP授权接口
  * @author Kevin zhaosheji.kevin@gmail.com
