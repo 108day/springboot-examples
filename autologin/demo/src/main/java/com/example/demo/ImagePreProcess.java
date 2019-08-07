@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 
+import net.sourceforge.tess4j.util.ImageHelper;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -50,6 +51,7 @@ public class ImagePreProcess {
                 }
             }
         }
+        //return enlargement(img);
         return img;
     }
 
@@ -65,7 +67,7 @@ public class ImagePreProcess {
 
     public static Map<BufferedImage, String> loadTrainData() throws Exception {
         Map<BufferedImage, String> map = new HashMap<>();
-        File dir = new File("train");
+        File dir = new File("d:\\code");
         File[] files = dir.listFiles();
         for (File file : files) {
             map.put(ImageIO.read(file), file.getName().charAt(0) + "");
@@ -111,6 +113,17 @@ public class ImagePreProcess {
     }
 
 
+   /* *//**
+     * 图片锐化与放大
+     *
+     * @return
+     *//*
+    private static BufferedImage enlargement(BufferedImage image) {
+        image = ImageHelper
+                .convertImageToGrayscale(ImageHelper.getSubImage(image, 0, 0, image.getWidth(), image.getHeight())); // 对图片进行处理
+        image = ImageHelper.getScaledInstance(image, image.getWidth() * 5, image.getHeight() * 5); // 将图片扩大5倍
+        return image;
+    }*/
 
     /**
      * @param args
@@ -118,7 +131,7 @@ public class ImagePreProcess {
      */
     public static void main(String[] args) throws Exception {
         for (int i = 0; i < 30; ++i) {
-            String text = getAllOcr("d:\\1564751069080.gif");
+            String text = getAllOcr("d:\\code\\7796.gif");
             System.out.println(text);
         }
     }

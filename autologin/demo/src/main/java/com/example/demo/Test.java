@@ -35,10 +35,8 @@ import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class Test {
     public static CloseableHttpClient getHttpClient() {
@@ -214,6 +212,18 @@ public class Test {
 
         public static void main (String args []){
             try {
+                String login = "https://h.kfun444.com/Account/Login";
+                HttpResponse httpResponse = Test.request(login, "get", null, null);
+                String cookie = getCookies(httpResponse);
+                System.out.println(cookie);
+                String result = Test.getText(httpResponse);
+                System.out.println(result);
+                String __RequestVerificationToken= "__RequestVerificationToken\" type=\"hidden\" value=\"";
+                String code1 = result.substring(result.indexOf(__RequestVerificationToken) + __RequestVerificationToken.length() + 1);
+                System.out.println(code1);
+                __RequestVerificationToken = code1.substring(0,code1.indexOf("\""));
+                System.out.println(__RequestVerificationToken);
+
                 String url = "https://h.kfun444.com/Account/Captcha";
                 Map<String, Object> params = new HashMap<>();
                 params.put("CaptchaError", "False");
@@ -227,8 +237,8 @@ public class Test {
                 /*
                  * 请求登录页面
                  */
-                HttpResponse httpResponse = Test.request(url, "post", params, header);
-                String result = Test.getText(httpResponse);
+                httpResponse = Test.request(url, "post", params, header);
+                result = Test.getText(httpResponse);
                 System.out.println(result);
                 /*
                  * 获取验参数
@@ -237,8 +247,8 @@ public class Test {
                 code = code.trim().substring(1, code.length() - 1);
                 code = code.substring(0, code.length() - 1);
                 System.out.println(code);
-                String cookie = getCookies(httpResponse);
-                header.put("Cookie", cookie);
+                String cookieCode = getCookies(httpResponse);
+                header.put("Cookie", cookieCode);
                 /*
                  * 获取验证码
                  */
@@ -246,10 +256,25 @@ public class Test {
                 Map<String, Object> params1 = new HashMap<>();
                 params1.put("t", code);
                 httpResponse = Test.request(imgAddress, "get", params1, header);
+
                 InputStream input = httpResponse.getEntity().getContent();
                 String imgName = "k_"+System.currentTimeMillis();
                 Test.saveImg(input,imgName);
-
+                String loginURL= "https://h.kfun333.com/Account/LoginVerify";
+                Scanner scan= new Scanner(System.in);
+                String CaptchaInputText= "";
+                if (scan.hasNext()) {
+                    CaptchaInputText = scan.next();
+                }
+                String loginId = "aaa2220";
+                String password = "a123456";
+                //String __RequestVerificationToken = __RequestVerificationToken;
+                String CaptchaDeText=code;
+                String SkipTradeAgreement= "true";
+                LoginUtil.postForm(loginURL,loginId,password,
+                        __RequestVerificationToken,
+                        CaptchaInputText,
+                        CaptchaDeText,SkipTradeAgreement,cookie);
             } catch (Exception e) {
                 e.printStackTrace();
             }

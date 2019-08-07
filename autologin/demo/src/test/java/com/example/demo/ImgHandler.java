@@ -12,9 +12,10 @@ public class ImgHandler {
 
     public static void main(String[] args) throws IOException
     {
-        String img = "D:\\code\\";
+
+        String img = "D:\\code\\";//多个图片的目录
         File testDataDir = new File(img);
-        final String destDir = testDataDir.getAbsolutePath()+"/data";
+        final String destDir = testDataDir.getAbsolutePath()+"/data"; //输出处理完后的文件目录
         for (File file : testDataDir.listFiles())
         {
             cleanLinesInImage(file, destDir);
@@ -53,6 +54,7 @@ public class ImgHandler {
                 int r = (int) (((argb >> 16) & 0xFF) * 1.1 + 30);
                 int g = (int) (((argb >> 8) & 0xFF) * 1.1 + 30);
                 int b = (int) (((argb >> 0) & 0xFF) * 1.1 + 30);
+
                 if (r >= 255)
                 {
                     r = 255;
@@ -115,7 +117,6 @@ public class ImgHandler {
                 }
             }
         }
-
 
         // 矩阵打印
         for (int y = 0; y < h; y++)

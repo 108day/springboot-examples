@@ -23,14 +23,14 @@ public class ImgRecognition {
     public static void main(String[] args) {
 
         ImgRecognition ocr = new ImgRecognition();
-        String result = ocr.recognizeText(filePath, true);
+        String result = ocr.recognizeText(filePath, false);
         System.out.println(result);
     }
 
 
     public String recognizeText(String imageFile, boolean isChinese) {
         String result = "";        // 保存读取到的识别内容并返回
-        String tesseractExe = "C:\\demo\\tessdata";
+        String tesseractExe = "D:\\demo\\tessdata";
 
         // 根据选项组装执行命令的字符串，注意参数之间需要加空格分隔开
         String command = tesseractExe + " " + imageFile + " " + output;
