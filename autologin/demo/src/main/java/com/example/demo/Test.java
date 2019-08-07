@@ -144,14 +144,20 @@ public class Test {
         return httpResponse;
     }
 
-    public static String getCookies(HttpResponse httpResponse){
-        Header[] cookies = httpResponse.getAllHeaders();
-        for(Header head:cookies){
+    public static StringBuffer getCookies(HttpResponse httpResponse,StringBuffer cookies){
+        Header[] headers = httpResponse.getAllHeaders();
+        for(Header head:headers){
             if(head.getName().equalsIgnoreCase("set-cookie")){
-                return head.getValue();
+                if(cookies == null|| cookies.length()==0){
+                    cookies.append(head.getValue()).append(";");
+                }else{
+                    cookies.append(" ");
+                    cookies.append(head.getValue()).append(";");
+                }
+
             }
         }
-        return null;
+        return cookies;
     }
 
     public  static void saveImg(InputStream data,String fileName) throws  IOException{
@@ -210,11 +216,45 @@ public class Test {
         return result;
     }
 
-        public static void main (String args []){
+
+    private HttpResponse getCookies(String url.String method,Map<String,Object> params,Map<String,Object> headers,StringBuffer cookies){
+        HttpResponse httpResponse = Test.request(url, method, params, headers);
+        String cookie = getCookies(httpResponse);
+        System.out.println(cookie);
+        cookies.append(cookie).append("; ");
+        return httpResponse;
+    }
+    public static void main (String args []){
             try {
+                /**
+                 * 设置 header
+                 */
+                Map<String, String> header = new HashMap<>();
+                header.put("DNT", "1");
+                header.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                header.put("Origin", "https://h.kfun444.com");
+                header.put("Referer", "https://h.kfun444.com/Account/Login");
+                header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36");
+                header.put("X-Requested-With", "XMLHttpRequest");
+                header.put("Accept-Language", "zh-CN,zh;q=0.9");
+                header.put("X-Requested-With", "XMLHttpRequest");
+                /**
+                 * 获取cookie 中的 token
+                 */
+                String auth = "https://h.kfun333.com/auth"
+                Map<String, Object> paramsAuth = new HashMap<>();
+                paramsAuth.put("url", "/Account/Login/");
+                HttpResponse httpResponse = Test.request(auth, "get", paramsAuth, header);
+                StringBuffer cookies = new StringBuffer();
+                getCookies(httpResponse,cookies);
+                System.out.println(cookies);
+                /**
+                 * 获取登录页面的参数，以及cookies
+                 */
+                header.put("Cookie", cookies.toString());
                 String login = "https://h.kfun444.com/Account/Login";
-                HttpResponse httpResponse = Test.request(login, "get", null, null);
-                String cookie = getCookies(httpResponse);
+                HttpResponse httpResponse = Test.request(login, "get", null, header);
+                getCookies(httpResponse,cookies);
                 System.out.println(cookie);
                 String result = Test.getText(httpResponse);
                 System.out.println(result);
@@ -223,58 +263,52 @@ public class Test {
                 System.out.println(code1);
                 __RequestVerificationToken = code1.substring(0,code1.indexOf("\""));
                 System.out.println(__RequestVerificationToken);
-
+                /**
+                 * 获取验证码参数
+                 */
                 String url = "https://h.kfun444.com/Account/Captcha";
                 Map<String, Object> params = new HashMap<>();
                 params.put("CaptchaError", "False");
-                Map<String, String> header = new HashMap<>();
-                header.put("DNT", "1");
-                header.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                header.put("Origin", "https://h.kfun444.com");
-                header.put("Referer", "https://h.kfun444.com/Account/Login");
-                header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36");
-                header.put("X-Requested-With", "XMLHttpRequest");
-                /*
-                 * 请求登录页面
-                 */
                 httpResponse = Test.request(url, "post", params, header);
                 result = Test.getText(httpResponse);
                 System.out.println(result);
-                /*
-                 * 获取验参数
-                 */
                 String code = result.substring(result.indexOf("value") + "value".length() + 1, result.indexOf("/"));
                 code = code.trim().substring(1, code.length() - 1);
                 code = code.substring(0, code.length() - 1);
                 System.out.println(code);
-                String cookieCode = getCookies(httpResponse);
-                header.put("Cookie", cookieCode);
-                /*
-                 * 获取验证码
+                getCookies(httpResponse,cookies);
+                header.put("Cookie", cookies.toString());
+                /**
+                 * 获取验证码图片
                  */
                 String imgAddress = "https://h.kfun444.com/DefaultCaptcha/Generate";
                 Map<String, Object> params1 = new HashMap<>();
                 params1.put("t", code);
                 httpResponse = Test.request(imgAddress, "get", params1, header);
-
                 InputStream input = httpResponse.getEntity().getContent();
                 String imgName = "k_"+System.currentTimeMillis();
-                Test.saveImg(input,imgName);
-                String loginURL= "https://h.kfun333.com/Account/LoginVerify";
+                Test.saveImg(input,imgName);//保存图片
+                /**
+                 * 人工输入验证码图片数字
+                 */
                 Scanner scan= new Scanner(System.in);
                 String CaptchaInputText= "";
                 if (scan.hasNext()) {
                     CaptchaInputText = scan.next();
                 }
+                /**
+                 * 开始登录
+                 */
+                String loginURL= "https://h.kfun333.com/Account/LoginVerify";
                 String loginId = "aaa2220";
                 String password = "a123456";
-                //String __RequestVerificationToken = __RequestVerificationToken;
+                String __RequestVerificationToken = __RequestVerificationToken;
                 String CaptchaDeText=code;
                 String SkipTradeAgreement= "true";
                 LoginUtil.postForm(loginURL,loginId,password,
                         __RequestVerificationToken,
                         CaptchaInputText,
-                        CaptchaDeText,SkipTradeAgreement,cookie);
+                        CaptchaDeText,SkipTradeAgreement,cookies.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
