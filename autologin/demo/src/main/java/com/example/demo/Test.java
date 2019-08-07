@@ -267,9 +267,9 @@ public class Test {
                  * 获取验证码参数
                  */
                 String url = "https://h.kfun444.com/Account/Captcha";
-                Map<String, Object> params = new HashMap<>();
-                params.put("CaptchaError", "False");
-                httpResponse = Test.request(url, "post", params, header);
+                Map<String, Object> paramsCode = new HashMap<>();
+                paramsCode.put("CaptchaError", "False");
+                httpResponse = Test.request(url, "post", paramsCode, header);
                 result = Test.getText(httpResponse);
                 System.out.println(result);
                 String code = result.substring(result.indexOf("value") + "value".length() + 1, result.indexOf("/"));
@@ -282,8 +282,7 @@ public class Test {
                  * 获取验证码图片
                  */
                 String imgAddress = "https://h.kfun444.com/DefaultCaptcha/Generate";
-                Map<String, Object> params1 = new HashMap<>();
-                params1.put("t", code);
+                paramsCode.put("t", code);
                 httpResponse = Test.request(imgAddress, "get", params1, header);
                 InputStream input = httpResponse.getEntity().getContent();
                 String imgName = "k_"+System.currentTimeMillis();
@@ -293,22 +292,34 @@ public class Test {
                  */
                 Scanner scan= new Scanner(System.in);
                 String CaptchaInputText= "";
-                if (scan.hasNext()) {
-                    CaptchaInputText = scan.next();
-                }
+                do  {
+                    if(scan.hasNext()){
+                        CaptchaInputText = scan.next();
+                    }
+                }while(CaptchaInputText!=null && CaptchaInputText.length() == 4);
                 /**
                  * 开始登录
                  */
                 String loginURL= "https://h.kfun333.com/Account/LoginVerify";
-                String loginId = "aaa2220";
-                String password = "a123456";
+                String LoginID = "aaa2220";
+                String Password = "a123456";
                 String __RequestVerificationToken = __RequestVerificationToken;
                 String CaptchaDeText=code;
                 String SkipTradeAgreement= "true";
-                LoginUtil.postForm(loginURL,loginId,password,
+                Map<String, Object> loginParams = new HashMap<>();
+                params.put("__RequestVerificationToken", __RequestVerificationToken);
+                params.put("LoginID", LoginID);
+                params.put("Password", Password);
+                params.put("CaptchaDeText", CaptchaDeText);
+                params.put("CaptchaInputText", CaptchaInputText);
+                params.put("SkipTradeAgreement", SkipTradeAgreement);
+                HttpResponse httpResponse = Test.request(loginURL, "post", loginParams, header);
+                String cookie11 = Test.getCookies(httpResponse,);
+                System.out.println(cookie11);
+                /*LoginUtil.postForm(loginURL,loginId,password,
                         __RequestVerificationToken,
                         CaptchaInputText,
-                        CaptchaDeText,SkipTradeAgreement,cookies.toString());
+                        CaptchaDeText,SkipTradeAgreement,cookies.toString());*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
