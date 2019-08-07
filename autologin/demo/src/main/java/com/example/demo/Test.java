@@ -217,48 +217,53 @@ public class Test {
     }
 
     public static void main (String args []){
+        StringBuffer cookies = new StringBuffer();
+        final String domain = "https://ykyl.smzbsx.cn";
         try {
             /**
              * 设置 header
              */
-                Map<String, String> header = new HashMap<>();
-                header.put("DNT", "1");
-                header.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                header.put("Origin", "https://h.kfun444.com");
-                header.put("Referer", "https://h.kfun444.com/Account/Login");
-                header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36");
-                header.put("X-Requested-With", "XMLHttpRequest");
-                header.put("Accept-Language", "zh-CN,zh;q=0.9");
-                header.put("X-Requested-With", "XMLHttpRequest");
-            /**
-             * 获取cookie 中的 token
-             */
-                String auth = "https://h.kfun333.com/auth";
-                Map<String, Object> paramsAuth = new HashMap<>();
-                paramsAuth.put("url", "/Account/Login/");
-                HttpResponse httpResponse = Test.request(auth, "get", paramsAuth, header);
-                StringBuffer cookies = new StringBuffer();
-                getCookies(httpResponse,cookies);
-                System.out.println(cookies);
+            Map<String, String> header = new HashMap<>();
+            header.put("DNT", "1");
+            header.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            header.put("Origin", domain);
+            header.put("Referer", domain+"/");
+            header.put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36");
+            header.put("X-Requested-With", "XMLHttpRequest");
+            header.put("Accept-Language", "zh-CN,zh;q=0.9");
             /**
              * 获取登录页面的参数，以及cookies
              */
-                header.put("Cookie", cookies.toString());
-                String login = "https://h.kfun444.com/Account/Login";
-                httpResponse = Test.request(login, "get", null, header);
-                getCookies(httpResponse,cookies);
-                System.out.println(cookies);
-                String result = Test.getText(httpResponse);
-                System.out.println(result);
-                String __RequestVerificationToken= "__RequestVerificationToken\" type=\"hidden\" value=\"";
-                String code1 = result.substring(result.indexOf(__RequestVerificationToken) + __RequestVerificationToken.length() + 1);
-                System.out.println(code1);
-                __RequestVerificationToken = code1.substring(0,code1.indexOf("\""));
-                System.out.println(__RequestVerificationToken);
+            String login = domain+"/Account/Login";
+            Test.request(login, "get", null, header);
+            /**
+             * 获取cookie 中的 token
+             */
+             String auth = domain+"/auth";
+             Map<String, Object> paramsAuth = new HashMap<>();
+             paramsAuth.put("url", "/Account/Login/");
+            HttpResponse  httpResponse = Test.request(auth, "get", paramsAuth, header);
+            getCookies(httpResponse,cookies);
+            System.out.println(cookies);
+            /**
+             * 获取登录页面的参数，以及cookies
+             */
+            header.put("Cookie", cookies.toString());
+            //login = domain+"/Account/Login";
+            httpResponse = Test.request(login, "get", null, header);
+            getCookies(httpResponse,cookies);
+            System.out.println(cookies);
+            String result = Test.getText(httpResponse);
+            System.out.println(result);
+            String __RequestVerificationToken= "__RequestVerificationToken\" type=\"hidden\" value=\"";
+            String code1 = result.substring(result.indexOf(__RequestVerificationToken) + __RequestVerificationToken.length() + 1);
+            System.out.println(code1);
+            __RequestVerificationToken = code1.substring(0,code1.indexOf("\""));
+            System.out.println(__RequestVerificationToken);
             /**
              * 获取验证码参数
              */
-                String url = "https://h.kfun444.com/Account/Captcha";
+                String url = domain+"/Account/Captcha";
                 Map<String, Object> paramsCode = new HashMap<>();
                 paramsCode.put("CaptchaError", "False");
                 httpResponse = Test.request(url, "post", paramsCode, header);
@@ -273,7 +278,7 @@ public class Test {
             /**
              * 获取验证码图片
              */
-                String imgAddress = "https://h.kfun444.com/DefaultCaptcha/Generate";
+                String imgAddress = domain+"/DefaultCaptcha/Generate";
                 paramsCode.put("t", code);
                 httpResponse = Test.request(imgAddress, "get", paramsCode, header);
                 InputStream input = httpResponse.getEntity().getContent();
@@ -292,7 +297,7 @@ public class Test {
             /**
              * 开始登录
              */
-                String loginURL= "https://h.kfun333.com/Account/LoginVerify";
+                String loginURL= domain+"/Account/LoginVerify";
                 String LoginID = "aaa2220";
                 String Password = "a123456";
                 String CaptchaDeText=code;
@@ -307,10 +312,6 @@ public class Test {
                 httpResponse = Test.request(loginURL, "post", loginParams, header);
                 getCookies(httpResponse,cookies);
                 System.out.println(cookies);
-                /*LoginUtil.postForm(loginURL,loginId,password,
-                        __RequestVerificationToken,
-                        CaptchaInputText,
-                        CaptchaDeText,SkipTradeAgreement,cookies.toString());*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
