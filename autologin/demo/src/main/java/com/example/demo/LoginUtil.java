@@ -49,7 +49,7 @@ public class LoginUtil {
             header.put("X-Requested-With", "XMLHttpRequest");
 
             HttpResponse httpResponse = Test.request(uri, "post", params, header);
-            String cookie11 = Test.getCookies(httpResponse);
+            Test.getCookies(httpResponse);
             System.out.println(cookie11);
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
