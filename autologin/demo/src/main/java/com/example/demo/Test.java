@@ -293,7 +293,10 @@ public class Test {
                     if(scan.hasNext()){
                         CaptchaInputText = scan.next();
                     }
-                }while(CaptchaInputText!=null && CaptchaInputText.length() == 4);
+                    if(CaptchaInputText!=null && CaptchaInputText.length()>0){
+                        break;
+                    }
+                }while(CaptchaInputText == null || "".equals(CaptchaInputText));
             /**
              * 开始登录
              */
